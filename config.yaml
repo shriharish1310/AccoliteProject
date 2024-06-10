@@ -1,0 +1,8 @@
+#api:
+#  url: 'https://api.coindesk.com/v1/bpi/currentprice.json'
+api:
+  url: 'https://api.github.com/users/hadley/orgs'
+#api:
+#  urls:
+#    - 'https://api.coindesk.com/v1/bpi/currentprice.json'
+#    - 'https://api.github.com/users/hadley/orgs'
