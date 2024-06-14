@@ -1,0 +1,98 @@
+openapi: 3.1.0
+info:
+  title: Bitcoin Price API
+  description: Provides real-time information about the price of Bitcoin.
+  version: 1.0.0
+  contact:
+    name: CoinDesk
+    url: https://www.coindesk.com/
+    email: info@coindesk.com
+paths:
+  /bitcoin:
+    get:
+      summary: Get Bitcoin price
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  time:
+                    type: object
+                    properties:
+                      updated:
+                        type: string
+                        format: date-time
+                        description: Time of last update in UTC
+                      updatedISO:
+                        type: string
+                        format: date-time
+                        description: Time of last update in ISO
+                      updatedUK:
+                        type: string
+                        description: Time of last update in UK
+                  disclaimer:
+                    type: string
+                    description: Gives Disclaimer
+                  chartName:
+                    type: string
+                    description: Name of the chart (Bitcoin)
+                  bpi:
+                    type: object
+                    properties:
+                      USD:
+                        type: object
+                        properties:
+                          code:
+                            type: string
+                            description: Currency code (USD)
+                          symbol:
+                            type: string
+                            description: Currency symbol
+                          rate:
+                            type: string
+                            description: Exchange rate
+                          description:
+                            type: string
+                            description: Currency description
+                          rate_float:
+                            type: number
+                            description: Exchange rate as a float
+                      GBP:
+                        type: object
+                        properties:
+                          code:
+                            type: string
+                            description: Currency code (GBP)
+                          symbol:
+                            type: string
+                            description: Currency symbol
+                          rate:
+                            type: string
+                            description: Exchange rate
+                          description:
+                            type: string
+                            description: Currency description
+                          rate_float:
+                            type: number
+                            description: Exchange rate as a float
+                      EUR:
+                        type: object
+                        properties:
+                          code:
+                            type: string
+                            description: Currency code (EUR)
+                          symbol:
+                            type: string
+                            description: Currency symbol
+                          rate:
+                            type: string
+                            description: Exchange rate
+                          description:
+                            type: string
+                            description: Currency description
+                          rate_float:
+                            type: number
+                            description: Exchange rate as a float

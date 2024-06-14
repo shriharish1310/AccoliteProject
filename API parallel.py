@@ -1,54 +1,8 @@
 import requests
-import json
 import yaml
 import time
-from dataclasses import dataclass
-from typing import List, Dict, Any
+import json
 from concurrent.futures import ThreadPoolExecutor, as_completed
-
-# Define dataclasses for the GitHub API response
-@dataclass
-class Organization:
-    login: str
-    id: int
-    node_id: str
-    url: str
-    repos_url: str
-    events_url: str
-    hooks_url: str
-    issues_url: str
-    members_url: str
-    public_members_url: str
-    avatar_url: str
-    description: str
-
-# Define dataclasses for the Coindesk API response
-@dataclass
-class Time:
-    updated: str
-    updatedISO: str
-    updateduk: str
-
-@dataclass
-class Currency:
-    code: str
-    symbol: str
-    rate: str
-    description: str
-    rate_float: float
-
-@dataclass
-class Bpi:
-    USD: Currency
-    GBP: Currency
-    EUR: Currency
-
-@dataclass
-class CoindeskResponse:
-    time: Time
-    disclaimer: str
-    chartName: str
-    bpi: Bpi
 
 # Function to read the YAML configuration
 def load_config(config_path: str) -> dict:
@@ -56,7 +10,7 @@ def load_config(config_path: str) -> dict:
         return yaml.safe_load(file)
 
 # Function to make an API call
-def fetch_data(url: str) -> Dict[str, Any]:
+def fetch_data(url: str) -> dict:
     response = requests.get(url)
     response.raise_for_status()  # Raise an exception for HTTP errors
     return response.json()
@@ -69,40 +23,28 @@ urls = config['api']['urls']
 
 # Start timing the script
 start_time = time.perf_counter()
-
-# Execute API calls in parallel using ThreadPoolExecutor
-results = []
+# Execute API calls in parallel
+results = [None] * len(urls)
 with ThreadPoolExecutor() as executor:
-    futures = [executor.submit(fetch_data, url) for url in urls]
-    for future in as_completed(futures):
+    future_to_index = {executor.submit(fetch_data, url): idx for idx, url in enumerate(urls)}
+    for future in as_completed(future_to_index):
+        idx = future_to_index[future]
         try:
-            results.append(future.result())
+            result = future.result()
+            results[idx] = result
         except Exception as e:
-            print(f"An error occurred: {e}")
+            print(f"An error occurred with URL at index {idx}: {e}")
 
 # End timing the script
 end_time = time.perf_counter()
 
-# Process and display the results
-for result, url in zip(results, urls):
-    print(f"Results from {url}:")
-    if 'bpi' in result:  # This is the Coindesk API response
-        time_data = Time(**result['time'])
-        bpi_data = Bpi(**{k: Currency(**v) for k, v in result['bpi'].items()})
-        coindesk_response = CoindeskResponse(
-            time=time_data,
-            disclaimer=result['disclaimer'],
-            chartName=result['chartName'],
-            bpi=bpi_data
-        )
-        print(coindesk_response)
-    elif isinstance(result, list):  # This is the GitHub API response
-        organizations = [Organization(**org) for org in result]
-        for org in organizations:
-            print(org)
-    else:
-        print("Unknown data format")
+# Indicate success
+print("Parallel execution success")
+
+# Save the results to a JSON file
+with open('parallel_results.json', 'w') as json_file:
+    json.dump(results, json_file, indent=4)
 
 # Calculate and print the run time with high accuracy
 run_time = end_time - start_time
-print(f"Script run time: {run_time:.15f} seconds")
+print(f"Parallel script run time: {run_time:.8f} seconds")

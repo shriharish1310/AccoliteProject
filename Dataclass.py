@@ -1,78 +1,48 @@
-import requests
-import json
-import yaml
-from dataclasses import dataclass
-from typing import Dict
+import sqlite3
 
+class Person:
+    def __init__(self, number, first, last, age):
+        self.number = number
+        self.first = first
+        self.last = last
+        self.age = age
+        self.connector = sqlite3.connect("mydata.db")
+        self.cursor = self.connector.cursor()
 
-# Define dataclasses
-@dataclass
-class Time:
-    updated: str
-    updatedISO: str
-    updateduk: str
+    def findperson(self, person_id):
+        self.cursor.execute("SELECT * FROM Person WHERE id=?", (person_id,))
+        result = self.cursor.fetchone()
+        print(result)
 
+    def insertperson(self):
+        self.cursor.execute("INSERT INTO Person (id, first_name, last_name, age) VALUES (?, ?, ?, ?)",
+                            (self.number, self.first, self.last, self.age))
+        self.connector.commit()
 
-@dataclass
-class Currency:
-    code: str
-    symbol: str
-    rate: str
-    description: str
-    rate_float: float
+# Ensure the table is created (if not already created)
+connection = sqlite3.connect("mydata.db")
+cursor = connection.cursor()
 
+# Insert a new person
+# p1 = Person(5, "SHri Harish", "Saravanan", 12)
+# p1.insertperson()
 
-@dataclass
-class Bpi:
-    USD: Currency
-    GBP: Currency
-    EUR: Currency
+# Function to find a person by ID
+def findtheguy(p_id):
+    connection = sqlite3.connect("mydata.db")
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM Person WHERE id=?", (p_id,))
+    print(cursor.fetchall())
+    connection.close()
 
+# Find the person with ID 4
+findtheguy(5)
 
-@dataclass
-class CoindeskResponse:
-    time: Time
-    disclaimer: str
-    chartName: str
-    bpi: Bpi
-
-
-# Function to read the YAML configuration
-def load_config(config_path: str) -> Dict:
-    with open(config_path, 'r') as file:
-        return yaml.safe_load(file)
-
-
-# Load configuration
-config = load_config('config.yaml')
-
-# Extract the URL from the configuration
-url = config['api']['url']
-
-# Make the API call
-response = requests.get(url)
-
-if response.status_code == 200:
-    # Parse the JSON response
-    data = response.json()
-
-    # Map the JSON data to dataclasses
-    time_data = Time(**data['time'])
-    bpi_data = Bpi(**{k: Currency(**v) for k, v in data['bpi'].items()})
-    coindesk_response = CoindeskResponse(
-        time=time_data,
-        disclaimer=data['disclaimer'],
-        chartName=data['chartName'],
-        bpi=bpi_data
-    )
-
-    # Print the response dataclass
-    print(coindesk_response)
-
-    # Save the JSON response to a file
-    with open('coindesk_output.json', 'w') as json_file:
-        json.dump(data, json_file, indent=4)
-
-    print("Data has been saved to coindesk_output.json")
-else:
-    print(f"Failed to retrieve data: {response.status_code}")
+# Uncomment to print all rows in the table
+# connection = sqlite3.connect("mydata.db")
+# cursor = connection.cursor()
+# cursor.execute("SELECT * FROM Person")
+# rows = cursor.fetchall()
+# for row in rows:
+#     print(row)
+# connection.close()
