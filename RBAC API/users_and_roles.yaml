@@ -1,0 +1,68 @@
+openapi: 3.1.0
+info:
+  title: User Github Organizations API
+  description: Fetch the organizations the user belongs to.
+  version: 1.0.0
+components:
+  roles:
+    admin:
+      endpoints:
+        - get_user_organizations
+      fields:
+        get_user_organizations: [login, id, node_id, url, description]
+
+    user:
+      endpoints:
+        - get_user_organizations
+      fields:
+        get_user_organizations: [login, id, url]
+
+    dev:
+      endpoints:
+        - get_user_organizations
+      fields:
+        get_user_organizations: [login, id, url, description]
+
+    guest:
+      endpoints:
+        - get_public_organizations
+      fields:
+        get_public_organizations: [login, id]
+
+users:
+  admin_role_user:
+    roles: [admin, dev, user]
+  developer_role_user:
+    roles: [dev, user]
+  user_role_user:
+    roles: [user]
+  guest_role_user:
+    roles: [guest]
+
+
+paths:
+  /users/hadley/orgs:
+    get:
+      summary: List user organizations
+      description: Fetch the organizations the user belongs to.
+      operationId: get_user_organizations
+      responses:
+        '200':
+          description: A JSON array of organizations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    login:
+                      type: string
+                    id:
+                      type: integer
+                    node_id:
+                      type: string
+                    url:
+                      type: string
+                    description:
+                      type: string

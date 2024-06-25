@@ -1,0 +1,7 @@
+api_name: GitHub RStats
+base_url: 'https://api.github.com'
+endpoints:
+  - path: '/orgs/rstats'
+    method: GET
+    headers:
+      Accept: 'application/vnd.github.v3+json'

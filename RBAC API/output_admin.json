@@ -1,0 +1,72 @@
+[
+    {
+        "login": "ggobi",
+        "id": 423638,
+        "node_id": "MDEyOk9yZ2FuaXphdGlvbjQyMzYzOA==",
+        "url": "https://api.github.com/orgs/ggobi",
+        "description": ""
+    },
+    {
+        "login": "rstudio",
+        "id": 513560,
+        "node_id": "MDEyOk9yZ2FuaXphdGlvbjUxMzU2MA==",
+        "url": "https://api.github.com/orgs/rstudio",
+        "description": ""
+    },
+    {
+        "login": "rstats",
+        "id": 722735,
+        "node_id": "MDEyOk9yZ2FuaXphdGlvbjcyMjczNQ==",
+        "url": "https://api.github.com/orgs/rstats",
+        "description": null
+    },
+    {
+        "login": "ropensci",
+        "id": 1200269,
+        "node_id": "MDEyOk9yZ2FuaXphdGlvbjEyMDAyNjk=",
+        "url": "https://api.github.com/orgs/ropensci",
+        "description": "Tools and R Packages for Open Science"
+    },
+    {
+        "login": "rjournal",
+        "id": 3330561,
+        "node_id": "MDEyOk9yZ2FuaXphdGlvbjMzMzA1NjE=",
+        "url": "https://api.github.com/orgs/rjournal",
+        "description": null
+    },
+    {
+        "login": "r-dbi",
+        "id": 5695665,
+        "node_id": "MDEyOk9yZ2FuaXphdGlvbjU2OTU2NjU=",
+        "url": "https://api.github.com/orgs/r-dbi",
+        "description": "R + databases"
+    },
+    {
+        "login": "RConsortium",
+        "id": 15366137,
+        "node_id": "MDEyOk9yZ2FuaXphdGlvbjE1MzY2MTM3",
+        "url": "https://api.github.com/orgs/RConsortium",
+        "description": "The R Consortium, Inc was established to provide support to the R Foundation and R Community, using maintaining and distributing R software."
+    },
+    {
+        "login": "tidyverse",
+        "id": 22032646,
+        "node_id": "MDEyOk9yZ2FuaXphdGlvbjIyMDMyNjQ2",
+        "url": "https://api.github.com/orgs/tidyverse",
+        "description": "The tidyverse is a collection of R packages that share common principles and are designed to work together seamlessly"
+    },
+    {
+        "login": "r-lib",
+        "id": 22618716,
+        "node_id": "MDEyOk9yZ2FuaXphdGlvbjIyNjE4NzE2",
+        "url": "https://api.github.com/orgs/r-lib",
+        "description": ""
+    },
+    {
+        "login": "rstudio-education",
+        "id": 34165516,
+        "node_id": "MDEyOk9yZ2FuaXphdGlvbjM0MTY1NTE2",
+        "url": "https://api.github.com/orgs/rstudio-education",
+        "description": ""
+    }
+]

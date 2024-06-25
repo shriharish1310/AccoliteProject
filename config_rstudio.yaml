@@ -1,0 +1,7 @@
+api_name: GitHub RStudio
+base_url: 'https://api.github.com'
+endpoints:
+  - path: '/orgs/rstudio'
+    method: GET
+    headers:
+      Accept: 'application/vnd.github.v3+json'

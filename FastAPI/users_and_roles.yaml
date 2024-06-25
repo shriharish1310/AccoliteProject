@@ -1,0 +1,215 @@
+openapi: 3.1.0
+info:
+  title: User Github API
+  description: Fetch various information about GitHub users.
+  version: 1.0.0
+components:
+  roles:
+    admin:
+      endpoints:
+        - get_user_organizations
+        - get_user_repos
+        - get_user_followers
+        - get_user_gists
+        - get_user_starred
+        - get_user_details
+      fields:
+        get_user_organizations: [login, id, node_id, url, description]
+        get_user_repos: [name, id, node_id, full_name, html_url, description]
+        get_user_followers: [login, id, node_id, avatar_url, url]
+        get_user_gists: [id, node_id, html_url, description]
+        get_user_starred: [full_name, id, node_id, html_url, description]
+        get_user_details: [login, id, node_id, avatar_url, html_url, name]
+
+    user:
+      endpoints:
+        - get_user_organizations
+        - get_user_repos
+      fields:
+        get_user_organizations: [login, id, url]
+        get_user_repos: [name, id, full_name, html_url]
+
+    dev:
+      endpoints:
+        - get_user_organizations
+        - get_user_repos
+        - get_user_followers
+      fields:
+        get_user_organizations: [login, id, url, description]
+        get_user_repos: [name, id, full_name, html_url, description]
+        get_user_followers: [login, id, avatar_url, url]
+
+    guest:
+      endpoints:
+        - get_public_organizations
+        - get_user_details
+      fields:
+        get_public_organizations: [login, id]
+        get_user_details: [login, id, avatar_url]
+
+users:
+  admin_role_user:
+    roles: [admin, dev, user, guest]
+  developer_role_user:
+    roles: [dev, user]
+  user_role_user:
+    roles: [user]
+  guest_role_user:
+    roles: [guest]
+
+paths:
+  /users/{username}/orgs:
+    get:
+      summary: List user organizations
+      description: Fetch the organizations the user belongs to.
+      operationId: get_user_organizations
+      responses:
+        '200':
+          description: A JSON array of organizations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    login:
+                      type: string
+                    id:
+                      type: integer
+                    node_id:
+                      type: string
+                    url:
+                      type: string
+                    description:
+                      type: string
+
+  /users/{username}/repos:
+    get:
+      summary: List user repositories
+      description: Lists public repositories for the specified user.
+      operationId: get_user_repos
+      responses:
+        '200':
+          description: A JSON array of repositories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    id:
+                      type: integer
+                    node_id:
+                      type: string
+                    full_name:
+                      type: string
+                    html_url:
+                      type: string
+                    description:
+                      type: string
+
+  /users/{username}/followers:
+    get:
+      summary: List user followers
+      description: Lists the people following the specified user.
+      operationId: get_user_followers
+      responses:
+        '200':
+          description: A JSON array of followers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    login:
+                      type: string
+                    id:
+                      type: integer
+                    node_id:
+                      type: string
+                    avatar_url:
+                      type: string
+                    url:
+                      type: string
+
+  /users/{username}/gists:
+    get:
+      summary: List user gists
+      description: Lists public gists for the specified user.
+      operationId: get_user_gists
+      responses:
+        '200':
+          description: A JSON array of gists
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    node_id:
+                      type: string
+                    html_url:
+                      type: string
+                    description:
+                      type: string
+
+  /users/{username}/starred:
+    get:
+      summary: List user starred repositories
+      description: Lists repositories the specified user has starred.
+      operationId: get_user_starred
+      responses:
+        '200':
+          description: A JSON array of starred repositories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    full_name:
+                      type: string
+                    id:
+                      type: integer
+                    node_id:
+                      type: string
+                    html_url:
+                      type: string
+                    description:
+                      type: string
+
+  /users/{username}:
+    get:
+      summary: Get user details
+      description: Retrieves details about the specified user.
+      operationId: get_user_details
+      responses:
+        '200':
+          description: A user object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  login:
+                    type: string
+                  id:
+                    type: integer
+                  node_id:
+                    type: string
+                  avatar_url:
+                    type: string
+                  html_url:
+                    type: string
+                  name:
+                    type: string
